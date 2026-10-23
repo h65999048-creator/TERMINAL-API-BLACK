@@ -97,7 +97,6 @@ def api_blacklist():
 
 # ==================== RUN ====================
 def run_flask():
-    """Flask ko daemon thread me chalao"""
     try:
         print(f"[+] Proxy API on port {PORT}")
         print(f"[+] {len(PROXIES)} proxies loaded")
@@ -105,13 +104,18 @@ def run_flask():
     except Exception as e:
         print(f"[!] Flask error: {e}")
 
-if __name__ == "__main__":
-    # Flask API ko alag thread me start karo (daemon)
-    threading.Thread(target=run_flask, daemon=True).start()
+def run_bot_forever():
+    while True:
+        try:
+            print("[+] Starting bot...")
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            bot.main()
+            print("[!] Bot returned. Restarting in 5s...")
+        except Exception as e:
+            print(f"[!] Bot crashed: {e}. Restarting in 5s...")
+        time.sleep(5)
 
-    # Bot ko MAIN THREAD me chalao (ye zaroori hai)
-    print("[+] Starting bot in main thread...")
-    try:
-        bot.main()
-    except Exception as e:
-        print(f"[!] Bot error: {e}")
+if __name__ == "__main__":
+    threading.Thread(target=run_flask, daemon=True).start()
+    run_bot_forever()

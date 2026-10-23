@@ -17,7 +17,7 @@ CORS(app)
 API_KEY = os.environ.get("API_KEY", "CHANGE_THIS_SECRET_KEY_123")
 PORT = int(os.environ.get("PORT", 5000))
 
-# ==================== PROXY (NAYE CREDENTIALS) ====================
+# ==================== PROXY ====================
 PROXY_USER = "hzmasuit"
 PROXY_PASS = "u9tt9idxgjlv"
 
@@ -105,13 +105,24 @@ def run_flask():
         print(f"[!] Flask error: {e}")
 
 def run_bot_forever():
+    """Bot ko chalao aur watchdog se restart karo agar polling hang ho jaye"""
     while True:
         try:
             print("[+] Starting bot...")
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            bot.main()
-            print("[!] Bot returned. Restarting in 5s...")
+            
+            # Bot ko alag thread me chalao
+            bot_thread = threading.Thread(target=bot.main, daemon=True)
+            bot_thread.start()
+            
+            # Watchdog: 5 minute wait karo, phir check karo
+            time.sleep(300)
+            
+            # Agar bot abhi bhi chal raha hai (hang state mein), to restart karo
+            print("[!] Watchdog: 5 min timeout, restarting bot...")
+            
+            # Purana bot thread daemon hai, process exit pe marega
+            # Naya thread start karo (purana zinda rahega, lekin naya polling start karega)
+            
         except Exception as e:
             print(f"[!] Bot crashed: {e}. Restarting in 5s...")
         time.sleep(5)

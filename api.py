@@ -104,24 +104,26 @@ def run_flask():
     except Exception as e:
         print(f"[!] Flask error: {e}")
 
+def bot_thread_func():
+    """Bot ke thread me event loop set karo, phir bot.main() chalao"""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        bot.main()
+    except Exception as e:
+        print(f"[!] Bot thread error: {e}")
+
 def run_bot_forever():
-    """Bot ko chalao aur watchdog se restart karo agar polling hang ho jaye"""
+    """Bot ko chalao aur watchdog se restart karo"""
     while True:
         try:
             print("[+] Starting bot...")
-            
-            # Bot ko alag thread me chalao
-            bot_thread = threading.Thread(target=bot.main, daemon=True)
+            bot_thread = threading.Thread(target=bot_thread_func, daemon=True)
             bot_thread.start()
             
-            # Watchdog: 5 minute wait karo, phir check karo
+            # Watchdog: 5 minute wait karo
             time.sleep(300)
-            
-            # Agar bot abhi bhi chal raha hai (hang state mein), to restart karo
             print("[!] Watchdog: 5 min timeout, restarting bot...")
-            
-            # Purana bot thread daemon hai, process exit pe marega
-            # Naya thread start karo (purana zinda rahega, lekin naya polling start karega)
             
         except Exception as e:
             print(f"[!] Bot crashed: {e}. Restarting in 5s...")

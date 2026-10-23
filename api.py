@@ -108,7 +108,7 @@ if __name__ == "__main__":
     # Flask ko daemon thread me chalao (background)
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
-    
+
     # Bot ko MAIN THREAD me chalao (run_polling ke liye zaroori)
     print("[+] Starting bot in main thread...")
     try:

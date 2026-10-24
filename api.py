@@ -17,9 +17,9 @@ CORS(app)
 API_KEY = os.environ.get("API_KEY", "CHANGE_THIS_SECRET_KEY_123")
 PORT = int(os.environ.get("PORT", 5000))
 
-# ==================== PROXY ====================
-PROXY_USER = "hzmasuit"
-PROXY_PASS = "u9tt9idxgjlv"
+# ==================== NAYE PROXY CREDENTIALS ====================
+PROXY_USER = "xahftsim"
+PROXY_PASS = "rl2zp8zi8y7g"
 
 PROXY_LIST = [
     "45.38.107.97:6014",

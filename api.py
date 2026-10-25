@@ -18,8 +18,8 @@ API_KEY = os.environ.get("API_KEY", "CHANGE_THIS_SECRET_KEY_123")
 PORT = int(os.environ.get("PORT", 5000))
 
 # ==================== NAYE PROXY CREDENTIALS ====================
-PROXY_USER = "xahftsim"
-PROXY_PASS = "rl2zp8zi8y7g"
+PROXY_USER = "ziyzfvjl"
+PROXY_PASS = "8t3rkl3fbi49"
 
 PROXY_LIST = [
     "45.38.107.97:6014",
